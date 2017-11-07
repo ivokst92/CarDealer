@@ -3,6 +3,7 @@
     using CarDealer.Data;
     using CarDealer.Data.Models;
     using CarDealer.Services.Interfaces;
+    using CarDealer.Web.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -30,14 +31,10 @@
                 .AddEntityFrameworkStores<CarDealerDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<ICarService, CarService>();
-            services.AddTransient<ISupplierService, SupplierService>();
-            services.AddTransient<ISaleService, SaleService>();
-            
+            services.AddDomainServices();
             services.AddMvc();
         }
-        
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
