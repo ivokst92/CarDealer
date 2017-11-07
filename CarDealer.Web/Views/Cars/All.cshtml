@@ -1,0 +1,38 @@
+﻿@model IEnumerable<CarModel>
+@{
+    ViewData["Title"] = "All Cars";
+}
+<h2>@ViewData["Title"]</h2>
+
+
+<table class="table table-bordered table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>
+                Make
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Travelled Distance
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>
+                    @car.Make
+                </td>
+                <td>
+                    @car.Model
+                </td>
+                <td>
+                    @(car.TravelledDistance) KM
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

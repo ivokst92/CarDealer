@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SaleDetailModel>
+@{
+    ViewData["Title"] = "Sales";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>
+                Customer
+            </th>
+            <th>
+                Make
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Travelled Distance
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Price With Discount
+            </th>
+            <th>
+                Discount
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sale in Model)
+        {
+            <tr>
+                <td>
+                    @sale.Customer
+                </td>
+                <td>
+                    @sale.Make
+                </td>
+                <td>
+                    @sale.Model
+                </td>
+                <td>
+                    @(sale.TravelledDistance) KM
+                </td>
+                <td>
+                    @sale.Price
+                </td>
+                <td>
+                    @sale.PriceWithDiscount
+                </td>
+                <td>
+                    @(sale.DiscountPercentage * 100) %
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
