@@ -33,9 +33,26 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="customers" asp-action="all" asp-route-id="ascending">Customers</a></li>
-                    <li><a asp-area="" asp-controller="sales" asp-action="">Sales</a></li>
-                    <li><a asp-area="" asp-controller="sales" asp-action="discounted">Discounted Sales</a></li>
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Customer
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="customers" asp-action="all" asp-route-id="ascending">Customers</a></li>
+                            <li><a asp-area="" asp-controller="customers" asp-action="create">Create</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Sales
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="sales" asp-action="">Sales</a></li>
+                            <li><a asp-area="" asp-controller="sales" asp-action="discounted">Discounted Sales</a></li>
+                        </ul>
+                    </li>
                     <li><a asp-area="" asp-controller="cars" asp-action="all">Cars</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

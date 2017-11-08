@@ -17,6 +17,64 @@
             this.customerService = customerService;
         }
 
+        [Route(nameof(Create))]
+        public IActionResult Create()
+        => View();
+
+        [HttpPost]
+        [Route(nameof(Create))]
+        public IActionResult Create(CustomerFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            this.customerService.CreateCustomer(model.Name,
+                                                model.Birthdate,
+                                                model.IsYoungDriver);
+
+            return RedirectToAction(nameof(All), new { order = OrderDirection.Ascending.ToString() });
+        }
+
+        [Route("customers/Edit/{Id}")]
+        public IActionResult Edit(int Id)
+        {
+            var customer = this.customerService.ById(Id);
+
+            if (customer == null)
+            {
+                NotFound();
+            }
+
+            return View(new CustomerFormModel()
+            {
+                Name = customer.Name,
+                Birthdate = customer.BirthDate,
+                IsYoungDriver = customer.IsYoungDriver
+            });
+        }
+
+        [HttpPost]
+        [Route("customers/Edit/{Id}")]
+        public IActionResult Edit(int Id, CustomerFormModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            bool customerExist = this.customerService.CustomerExist(Id);
+            if (!customerExist)
+            {
+                NotFound();
+            }
+            this.customerService.EditCustomer(Id,
+                                              model.Name,
+                                              model.Birthdate,
+                                              model.IsYoungDriver);
+
+            return RedirectToAction(nameof(All), new { order = OrderDirection.Ascending.ToString() });
+        }
+
         public IActionResult All(string order)
         {
             var orderDirection = order.ToLower() == "ascending"
