@@ -5,6 +5,7 @@
     using System.Linq;
     using CarDealer.Services.Models;
     using System.Collections.Generic;
+    using CarDealer.Services.Models.Supplier;
 
     public class SupplierService : ISupplierService
     {
@@ -25,5 +26,16 @@
                     TotalParts = s.Parts.Count
                 }).ToList();
         }
+
+        public IEnumerable<SupplierBaseModel> All()
+        => this.db
+            .Suppliers
+            .OrderBy(s => s.Name)
+            .Select(s => new SupplierBaseModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            })
+            .ToList();
     }
 }
