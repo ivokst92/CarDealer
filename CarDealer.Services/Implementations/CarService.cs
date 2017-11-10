@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using CarDealer.Services.Models.Cars;
+    using CarDealer.Data.Models;
 
     public class CarService : ICarService
     {
@@ -39,6 +40,17 @@
                      TravelledDistance = x.TravelledDistance
                  })
                  .ToList();
+        }
+
+        public void Create(string make, string model, long travelledDistance)
+        {
+            this.db.Cars.Add(new Car
+            {
+                Make = make,
+                Model = model,
+                TravelledDistance = travelledDistance
+            });
+            this.db.SaveChanges();
         }
 
         public IEnumerable<CarWithPartsModel> WithParts()

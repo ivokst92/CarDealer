@@ -31,6 +31,18 @@
                     Supplier = p.Supplier.Name,
                 }).ToList();
 
+        public PartDetailsModel ById(int id)
+            => this.db.Parts
+            .Where(x => x.Id == id)
+            .Select(x => new PartDetailsModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Price = x.Price.GetValueOrDefault(),
+                Quantity = x.Quantity,
+                SupplierId = x.SupplierId
+            }).FirstOrDefault();
+
         public void Create(string name, double price, int quantity, int supplierId)
         {
             this.db.Parts.Add(
@@ -41,6 +53,31 @@
                     Quantity = quantity,
                     SupplierId = supplierId
                 });
+            this.db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var part = this.db.Parts.Find(id);
+
+            if (part == null)
+            {
+                return;
+            }
+
+            this.db.Parts.Remove(part);
+            this.db.SaveChanges();
+        }
+
+        public void Edit(int id, double price, int quantity)
+        {
+            var part = this.db.Parts.Find(id);
+            if (part == null)
+            {
+                return;
+            }
+            part.Price = price;
+            part.Quantity = quantity;
             this.db.SaveChanges();
         }
 

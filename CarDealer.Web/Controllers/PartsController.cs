@@ -43,6 +43,48 @@
             return RedirectToAction(nameof(All));
         }
 
+        public IActionResult Edit(int Id)
+        {
+            var part = this.partsService.ById(Id);
+            if (part == null)
+            {
+                return NotFound();
+            }
+
+            return View(new PartFormModel()
+            {
+                Name = part.Name,
+                Price = part.Price,
+                Quantity = part.Quantity,
+                SupplierId = part.SupplierId,
+                IsEdit = true,
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int Id, PartFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.IsEdit = true;
+                return View(model);
+            }
+
+            this.partsService.Edit(Id,
+                                model.Price,
+                                model.Quantity);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult Delete(int Id)
+        => View(Id);
+
+        public IActionResult Destroy(int Id)
+        {
+            this.partsService.Delete(Id);
+            return RedirectToAction(nameof(All));
+        }
         public IActionResult All(int page = 1)
         => View(new PartPageListingModel
         {

@@ -9,5 +9,6 @@
         IEnumerable<CarModel> ByMake(string make);
         IEnumerable<CarModel> AllCars();
         IEnumerable<CarWithPartsModel> WithParts();
+        void Create(string make, string model, long travelledDistance);
     }
 }

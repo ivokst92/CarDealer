@@ -11,16 +11,16 @@
     [Route("cars")]
     public class CarsController : Controller
     {
-        private readonly ICarService service;
+        private readonly ICarService serviceParts;
         public CarsController(ICarService service)
         {
-            this.service = service;
+            this.serviceParts = service;
         }
 
         [Route("{make}", Order = 2)]
         public IActionResult ByMake(string make)
         {
-            var cars = this.service.ByMake(make);
+            var cars = this.serviceParts.ByMake(make);
 
             return View(new CarsByMakeModel()
             {
@@ -29,12 +29,32 @@
             });
         }
 
+        [Route(nameof(Create))]
+        public IActionResult Create()
+            => View();
+
+        [HttpPost]
+        [Route(nameof(Create))]
+        public IActionResult Create(CarFormModel carModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(carModel);
+            }
+
+            this.serviceParts.Create(carModel.Make,
+                                     carModel.Model,
+                                     carModel.TravelledDistance);
+
+            return RedirectToAction(nameof(All));
+        }
+
         [Route("parts", Order = 1)]
         public IActionResult Parts()
-            => View(this.service.WithParts());
+            => View(this.serviceParts.WithParts());
 
         [Route("All")]
         public IActionResult All()
-            => View(this.service.AllCars());
+            => View(this.serviceParts.AllCars());
     }
 }
