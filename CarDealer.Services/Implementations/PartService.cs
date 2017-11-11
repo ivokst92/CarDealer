@@ -31,6 +31,17 @@
                     Supplier = p.Supplier.Name,
                 }).ToList();
 
+        public IEnumerable<PartBaseModel> All()
+        => this.db
+                .Parts
+                .OrderByDescending(x => x.Id)
+                .Select(p =>
+                new PartBaseModel
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }).ToList();
+
         public PartDetailsModel ById(int id)
             => this.db.Parts
             .Where(x => x.Id == id)

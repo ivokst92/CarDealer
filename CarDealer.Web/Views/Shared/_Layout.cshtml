@@ -54,7 +54,16 @@
                             <li><a asp-area="" asp-controller="sales" asp-action="discounted">Discounted Sales</a></li>
                         </ul>
                     </li>
-                    <li><a asp-area="" asp-controller="cars" asp-action="all">Cars</a></li>
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Cars
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="cars" asp-action="all">Cars</a></li>
+                            <li><a asp-area="" asp-controller="cars" asp-action="Parts">Cars with their parts</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

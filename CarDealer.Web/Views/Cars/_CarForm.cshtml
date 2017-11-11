@@ -16,7 +16,12 @@
         <input asp-for="TravelledDistance" class="form-control" />
         <span asp-validation-for="TravelledDistance" class="form-text text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="Parts"></label>
+        <select asp-for="SelectedPats" asp-items="Model.Parts" multiple class="form-control parts-select"></select>
+        <small>*Hold "Ctrl" to select multiple parts</small>
+    </div>
     <div>
-        <input class="btn btn-success" type="submit" value="@(Model==null? "Add" : "Edit") Car" />
+        <input class="btn btn-success" type="submit" value="@(ViewContext.ActionDescriptor.DisplayName.Contains("Create")? "Add" : "Edit") Car" />
     </div>
 </form>

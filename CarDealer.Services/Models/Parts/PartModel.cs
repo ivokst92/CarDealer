@@ -2,13 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class PartModel
+    public class PartModel : PartBaseModel
     {
-        public int Id { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string Name { get; set; }
 
         [Range(0, double.MaxValue)]
         public double Price { get; set; }

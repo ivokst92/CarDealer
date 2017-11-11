@@ -1,26 +1,30 @@
 ﻿namespace CarDealer.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
     using CarDealer.Services.Interfaces;
     using CarDealer.Web.Models.Cars;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     [Route("cars")]
     public class CarsController : Controller
     {
-        private readonly ICarService serviceParts;
-        public CarsController(ICarService service)
+        private readonly ICarService carService;
+        private readonly IPartService partsService;
+
+        public CarsController(ICarService carService, IPartService partsService)
         {
-            this.serviceParts = service;
+            this.carService = carService;
+            this.partsService = partsService;
         }
 
         [Route("{make}", Order = 2)]
         public IActionResult ByMake(string make)
         {
-            var cars = this.serviceParts.ByMake(make);
+            var cars = this.carService.ByMake(make);
 
             return View(new CarsByMakeModel()
             {
@@ -29,32 +33,51 @@
             });
         }
 
+        [Authorize]
         [Route(nameof(Create))]
         public IActionResult Create()
-            => View();
+            => View(new CarFormModel
+            {
+                Parts = GetSelectListParts()
+            });
 
+        [Authorize]
         [HttpPost]
         [Route(nameof(Create))]
         public IActionResult Create(CarFormModel carModel)
         {
             if (!ModelState.IsValid)
             {
+                carModel.Parts = GetSelectListParts();
                 return View(carModel);
             }
 
-            this.serviceParts.Create(carModel.Make,
+            this.carService.Create(carModel.Make,
                                      carModel.Model,
-                                     carModel.TravelledDistance);
+                                     carModel.TravelledDistance,
+                                     carModel.SelectedPats);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Parts));
         }
 
         [Route("parts", Order = 1)]
         public IActionResult Parts()
-            => View(this.serviceParts.WithParts());
+            => View(this.carService.WithParts());
 
         [Route("All")]
         public IActionResult All()
-            => View(this.serviceParts.AllCars());
+            => View(this.carService.AllCars());
+
+        private IEnumerable<SelectListItem> GetSelectListParts()
+        {
+            return this.partsService
+                 .All()
+                 .Select(x =>
+                 new SelectListItem
+                 {
+                     Text = x.Name,
+                     Value = x.Id.ToString()
+                 });
+        }
     }
 }

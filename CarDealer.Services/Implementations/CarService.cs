@@ -42,14 +42,28 @@
                  .ToList();
         }
 
-        public void Create(string make, string model, long travelledDistance)
+        public void Create(string make, string model, long travelledDistance, IEnumerable<int> parts)
         {
-            this.db.Cars.Add(new Car
+            var existingIds = this.db
+                .Parts
+                .Where(x => parts.Contains(x.Id))
+                .Select(p => p.Id)
+                .ToList();
+
+            var car = new Car
             {
                 Make = make,
                 Model = model,
                 TravelledDistance = travelledDistance
-            });
+            };
+
+            this.db.Cars.Add(car);
+
+            foreach (var partId in existingIds)
+            {
+                car.Parts.Add(new PartCar { PartId = partId });
+            }
+
             this.db.SaveChanges();
         }
 
